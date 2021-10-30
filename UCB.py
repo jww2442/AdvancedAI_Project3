@@ -3,18 +3,21 @@
 # Professor: Dr. Sen, Fall 2021
 # Noah Schrick, Noah Hall, Jordan White
 
-from docx import Document
-from docx.shared import Inches
+# For writing Figures to Report.docx
+#from docx import Document
+#from docx.shared import Inches
+
 import numpy as np
 import random
 from Bandit_Sim.bandit_sim import Bandit_Sim
 import matplotlib.pyplot as plt
 
-NUM_ARMS = 99
+#Global Variables
+NUM_ARMS = 10
 NUM_SAMPLES = 1000
 EPSILON = 0.3
 NUM_TRIALS = 100
-STD_DEV = 0.2
+STD_DEV = 0.1
 
 class Arm:
     instances = []
@@ -45,10 +48,11 @@ def main():
     eg_tot_r_list = []
     eg_regret = []
 
-    document = Document('Report.docx')
-    heading_str = str(NUM_SAMPLES) + ' Samples, ' + str(NUM_TRIALS) + ' Trials, ' + str(NUM_ARMS) + ' Arms, Epsilon=' + str(EPSILON) + ' Std Dev=' + str(STD_DEV)
-    document.add_heading(heading_str)
-    document.save('Report.docx')
+    # Writing to Document
+    #document = Document('Report.docx')
+    #heading_str = str(NUM_SAMPLES) + ' Samples, ' + str(NUM_TRIALS) + ' Trials, ' + str(NUM_ARMS) + ' Arms, Epsilon=' + str(EPSILON) + ' Std Dev=' + str(STD_DEV)
+    #document.add_heading(heading_str)
+    #document.save('Report.docx')
 
     '''Call UCB'''
     for i in range(NUM_TRIALS):
@@ -76,7 +80,7 @@ def main():
     plot_results(eg_r_avg, eg_regret, "e-Greedy", bandsim)
 
     comp_ucb_eg(ucb_regret, eg_regret, bandsim)
-    #plt.show()
+    plt.show()
 
   
 def plot_results(r_list, regret, fcn, bandsim):
@@ -97,10 +101,10 @@ def plot_results(r_list, regret, fcn, bandsim):
         plt.text(NUM_SAMPLES, rew, str(rew))
     plt.title(title_str)
     plt.legend()
-    #plt.show(block=False)
+    plt.show(block=False)
     plt.savefig('1.png')
-    document=Document('Report.docx')
-    document.add_picture('1.png', width=Inches(1.25))
+    #document=Document('Report.docx')
+    #document.add_picture('1.png', width=Inches(1.25))
 
     #Bar Graph:
     #Get list of arms for plotting labels
@@ -126,7 +130,7 @@ def plot_results(r_list, regret, fcn, bandsim):
         plt.text(i, tot_pulls[i], tot_pulls[i], ha="center", va="bottom")
     #plt.show(block=False)
     plt.savefig('2.png')
-    document.add_picture('2.png', width=Inches(1.25))
+    #document.add_picture('2.png', width=Inches(1.25))
 
 
     #Plot Regret
@@ -153,8 +157,8 @@ def plot_results(r_list, regret, fcn, bandsim):
     plt.legend()
     #plt.show(block=False)
     plt.savefig('3.png')
-    document.add_picture('3.png', width=Inches(1.25))
-    document.save('Report.docx')
+    #document.add_picture('3.png', width=Inches(1.25))
+    #document.save('Report.docx')
 
 
 def comp_ucb_eg(ucb_regret, eg_regret, bandsim):
@@ -173,11 +177,9 @@ def comp_ucb_eg(ucb_regret, eg_regret, bandsim):
     plt.legend()
     #plt.show(block=False)
     plt.savefig('4.png')
-    document=Document('Report.docx')
-    document.add_picture('4.png', width=Inches(1.25))
-    document.save('Report.docx')
-
-
+    #document=Document('Report.docx')
+    #document.add_picture('4.png', width=Inches(1.25))
+    #document.save('Report.docx')
 
 def list_avg(myList):
     return np.mean(myList, axis=0)
