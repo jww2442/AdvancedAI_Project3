@@ -19,7 +19,9 @@ class Agent:
         self.mdp.gamma = gamma
         self.Rplus = Rplus
         self.Ne = Ne
-        self.s, self.a, self.r = None, None, None
+        self.s = None
+        self.a = None
+        self.r = None
         self.Qtable = defaultdict(float)
         self.Nsa = defaultdict(int)
 
@@ -32,13 +34,15 @@ class Agent:
         self.r = r
 
     def reset(self):
-        self.s, self.a, self.r = None
+        self.s = None
+        self.a = None
+        self.r = None
 
     def terminal(self, state):
         if self.mdp.is_terminal(state):
             return True
         else:
-            False
+            return False
 
     def find(self, u, n):
         if n < self.Ne:
@@ -46,20 +50,22 @@ class Agent:
         else:
             return u
 
+
 def QLearn(agent: Agent, perc):
     s, a, r = agent.prevArgs()
-    qtable = agent.Qtable
-    nsa = agent.Nsa
+    agent.Qtable = agent.Qtable
+    agent.Nsa = agent.Nsa
     s1, r1 = perc
     if agent.terminal(s1):
-        qtable[s1, None] = r1
+        agent.Qtable[s1, None] = r1
     if s is not None:
-        nsa[s,a] += 1
-        qtable[s,a] += agent.alpha(nsa[s,a]) * (r + agent.gamma * max(qtable[s1, a1] for a1 in agent.mdp.actions_at(s1)) - qtable[s, a])
+        agent.Nsa[s,a] += 1
+        agent.Qtable[s,a] += agent.alpha(agent.Nsa[s,a]) * (r + agent.gamma
+                                                * max(agent.Qtable[s1, a1] for a1 in agent.mdp.actions_at(s1)) - agent.Qtable[s, a])
     if agent.terminal(s1):
         agent.reset()
     else:
-        newA = max(agent.mdp.actions_at(s1), key = lambda a1: agent.find(qtable[s1, a1], nsa[s1, a1]))
+        newA = max(agent.mdp.actions_at(s1), key=lambda a1: agent.find(agent.Qtable[s1, a1], agent.Nsa[s1, a1]))
         agent.update(s1, newA, r1)
     return agent.a
 
@@ -85,13 +91,13 @@ def Qrun(agent: Agent, n):
     rewards = []
     for i in range(n):
         mdp = agent.mdp
-        x = (0, 0)
+        x = mdp.initial_state
         print(x)
         rTotal = 0
         count = 0
         r = 0
         while True:
-            r = mdp.r(None, x)
+            r = mdp.r(x, x)
             rTotal += r
             count += 1
             perc = (x, r)
