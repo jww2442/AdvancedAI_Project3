@@ -102,7 +102,7 @@ def plot_results(r_list, regret, fcn, bandsim):
     plt.title(title_str)
     plt.legend()
     plt.show(block=False)
-    plt.savefig('1.png')
+    plt.savefig('Figures/1.png')
     #document=Document('Report.docx')
     #document.add_picture('1.png', width=Inches(1.25))
 
@@ -129,7 +129,7 @@ def plot_results(r_list, regret, fcn, bandsim):
     for i in range(len(arms)):
         plt.text(i, tot_pulls[i], tot_pulls[i], ha="center", va="bottom")
     #plt.show(block=False)
-    plt.savefig('2.png')
+    plt.savefig('Figures/2.png')
     #document.add_picture('2.png', width=Inches(1.25))
 
 
@@ -156,7 +156,7 @@ def plot_results(r_list, regret, fcn, bandsim):
     plt.title(title_str)
     plt.legend()
     #plt.show(block=False)
-    plt.savefig('3.png')
+    plt.savefig('Figures/3.png')
     #document.add_picture('3.png', width=Inches(1.25))
     #document.save('Report.docx')
 
@@ -176,7 +176,7 @@ def comp_ucb_eg(ucb_regret, eg_regret, bandsim):
     plt.title(title_str)
     plt.legend()
     #plt.show(block=False)
-    plt.savefig('4.png')
+    plt.savefig('Figures/4.png')
     #document=Document('Report.docx')
     #document.add_picture('4.png', width=Inches(1.25))
     #document.save('Report.docx')
