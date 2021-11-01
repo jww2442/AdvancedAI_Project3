@@ -53,8 +53,8 @@ class Agent:
 
 def QLearn(agent: Agent, perc):
     s, a, r = agent.prevArgs()
-    agent.Qtable = agent.Qtable
-    agent.Nsa = agent.Nsa
+    #agent.Qtable = agent.Qtable
+    #agent.Nsa = agent.Nsa
     s1, r1 = perc
     if agent.terminal(s1):
         agent.Qtable[s1, None] = r1

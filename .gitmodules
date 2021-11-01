@@ -1,3 +1,9 @@
 [submodule "Bandit_Sim"]
 	path = Bandit_Sim
 	url = https://github.com/robger98/Bandit_Sim
+[submodule "CartPole-v0-using-Q-learning-SARSA-and-DNN"]
+	path = CartPole-v0-using-Q-learning-SARSA-and-DNN
+	url = https://github.com/init-22/CartPole-v0-using-Q-learning-SARSA-and-DNN
+[submodule "cartpole-balancing"]
+	path = cartpole-balancing
+	url = https://github.com/vsindato/cartpole-balancing
