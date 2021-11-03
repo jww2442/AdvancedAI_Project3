@@ -39,7 +39,7 @@ def main():
         '''
 
     t, e, r = cartpole.run(cartpole_g)
-    VP_t.append(t)
+    VP_t.append(t/(e*10))
     VP_tt = np.repeat(VP_t, 100)
     VPr = r
 
