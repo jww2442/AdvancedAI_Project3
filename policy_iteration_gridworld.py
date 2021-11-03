@@ -1,10 +1,11 @@
 
 import cs7313_mdp.gridworld as gw
 
+import time
 import numpy as np
 import random
 
-from value_iteration_gridworld import Q_value
+#from value_iteration_gridworld import Q_value
 
 
 def policy_iteration(mdp, discount):
@@ -57,28 +58,57 @@ def Q_value(mdp, s, a, U, discount):
         next_state = next_state_and_prob[0]
         next_prob = next_state_and_prob[1]
         reward = mdp.r(None, next_state)
-        expected_util_given_s_and_a += next_prob*(reward + discount * U.get(next_state.pos)) 
+        expected_util_given_s_and_a += next_prob*(reward + discount * U.get(next_state.pos)) ##change to 1-discount?
     
     return expected_util_given_s_and_a
 
 
 
+def make_grid(i):
+
+    mdp = gw.DiscreteGridWorldMDP(i, i)
+
+    if(i<=6):
+
+        mdp.add_obstacle('pit', (0,3))
+        mdp.add_obstacle('pit', (3,0))
+        mdp.add_obstacle('goal', (i-1, i-1))
+    
+    elif(i <=8 ):
+
+        mdp.add_obstacle('pit', (0,3))
+        mdp.add_obstacle('pit', (1, 6))
+        mdp.add_obstacle('pit', (4, 1))
+        mdp.add_obstacle('pit', (2, 2))
+
+        mdp.add_obstacle('goal', (i-1, i-1))
+
+    elif(i<=10):
+        mdp.add_obstacle('pit', (0, 1))
+        mdp.add_obstacle('pit', (1, 6))
+        mdp.add_obstacle('pit', (4, 5))
+        mdp.add_obstacle('pit', (2, 8))
+        mdp.add_obstacle('pit', (8, 2))
+
+        mdp.add_obstacle('goal', (i-1, i-1))
+
+    return mdp
 
 if(__name__ == '__main__'): 
+    from cs7313_mdp import gridworld as gw
 
-    mdp = gw.DiscreteGridWorldMDP(4, 4)
+    times = []
+    for i in [4, 5, 6, 7, 8, 9, 10]:
+        mdp = make_grid(i)
 
-    mdp.add_obstacle('pit', (2,2))
-    mdp.add_obstacle('pit', (1,2))
-    mdp.add_obstacle('pit', (1,1))
-    mdp.add_obstacle('pit', (1,0))
+        mdp.display()
+        t0 = time.perf_counter()
+        pi = policy_iteration(mdp, 0.7)
+        t1 = time.perf_counter()
 
-    mdp.add_obstacle('goal', (3,3))
-
-    mdp.display()
-
-    pi = policy_iteration(mdp, 0.7)
-
-    print('\n\nU:', pi)
+        print('Time taken: ', t1-t0, '\npi:', pi, '\n\n')
+        times.append(t1-t0)
+    print(times)
+    
 
 

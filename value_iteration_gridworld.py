@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 from cs7313_mdp import mdp
 
@@ -13,10 +14,10 @@ def value_iter(mdp, err, discount):
 
         for s in mdp.states: 
             
-            # if(mdp.is_terminal(s)):
-            #     q_val_at_s = mdp.r(s, s) #first param not used
-            if(False):
-                pass
+            if(mdp.is_terminal(s)):
+                q_val_at_s = mdp.r(s, s) #first param not used
+            # if(False):
+            #     pass
             else:
                 q_val_at_s = -np.inf
                 for a in mdp.actions_at(s): 
@@ -42,24 +43,54 @@ def Q_value(mdp, s, a, U, discount):
         next_state = next_state_and_prob[0]
         next_prob = next_state_and_prob[1]
         reward = mdp.r(s, next_state)
-        expected_util_given_s_and_a += next_prob*(reward + discount * U.get(next_state.pos)) 
+        expected_util_given_s_and_a += next_prob*(reward + (1-discount) * U.get(next_state.pos)) 
         #print(expected_util_given_s_and_a)
     
     return expected_util_given_s_and_a
 
 
+def make_grid(i):
 
+    mdp = gw.DiscreteGridWorldMDP(i, i)
+
+    if(i<=6):
+
+        mdp.add_obstacle('pit', (0,3))
+        mdp.add_obstacle('pit', (3,0))
+        mdp.add_obstacle('goal', (i-1, i-1))
+    
+    elif(i <=8 ):
+
+        mdp.add_obstacle('pit', (0,3))
+        mdp.add_obstacle('pit', (1, 6))
+        mdp.add_obstacle('pit', (4, 1))
+        mdp.add_obstacle('pit', (2, 2))
+
+        mdp.add_obstacle('goal', (i-1, i-1))
+
+    elif(i<=10):
+        mdp.add_obstacle('pit', (0, 1))
+        mdp.add_obstacle('pit', (1, 6))
+        mdp.add_obstacle('pit', (4, 5))
+        mdp.add_obstacle('pit', (2, 8))
+        mdp.add_obstacle('pit', (8, 2))
+
+        mdp.add_obstacle('goal', (i-1, i-1))
+
+    return mdp
 
 if(__name__ == '__main__'): 
     from cs7313_mdp import gridworld as gw
 
-    mdp = gw.DiscreteGridWorldMDP(4, 4, 0, 0, -1)
+    times = []
+    for i in [4, 5, 6, 7, 8, 9, 10]:
+        mdp = make_grid(i)
 
-    mdp.add_obstacle('pit', (0,3))
-    mdp.add_obstacle('pit', (3,0))
+        mdp.display()
+        t0 = time.perf_counter()
+        U, U_prime = value_iter(mdp, 0.01, 0.7)
+        t1 = time.perf_counter()
 
-    mdp.display()
-
-    U, U_prime = value_iter(mdp, 0.01, 0.7)
-
-    print('\n\nU:', U, '\n\nUprime:', U_prime, '\n\n')
+        print('Time taken: ', t1-t0, '\nU:', U, '\n\n')
+        times.append(t1-t0)
+    print(times)
