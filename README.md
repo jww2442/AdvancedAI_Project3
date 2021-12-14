@@ -1,5 +1,10 @@
 # CS 5313/7313: Advanced Artificial Intelligence: Solving Markov Decision Processes and Multi-armed Bandit Problems
 
+Team project members: Noah Schrick, Noah Hall, Jordan White
+Project goal: Solve MDPs (Markov Decision Processes) for small games, and solve Multi Armed Bandit problems. 
+Project specifications explained below: 
+
+
 # World model available
 
 Implement value iteration and modified policy iteration (Chapter 17 of textbook) and eval-
